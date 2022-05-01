@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low Poly Dummy / Human Figure
+* source:	https://sketchfab.com/3d-models/low-poly-dummy-human-figure-a1cca4d43d81425ea1d328088f2a32d5
+* author:	moogh (https://sketchfab.com/moogh)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low Poly Dummy / Human Figure" (https://sketchfab.com/3d-models/low-poly-dummy-human-figure-a1cca4d43d81425ea1d328088f2a32d5) by moogh (https://sketchfab.com/moogh) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
