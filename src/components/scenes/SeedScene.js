@@ -32,15 +32,20 @@ class SeedScene extends Scene {
     // const land = new Land();
     const stage = new Stage();
     const person = new Person();
-    // const flower = new Flower(this);
+    // person.position.add(new THREE.Vector3(-500, -500, -500));
     const lights = new BasicLights();
     // position stage
     stage.position.add(new THREE.Vector3(0, -250, -700));
+    stage.scale.set(0.4, 0.4, 0.4);
     // this.add(land, stage, flower, lights);
-    this.add(stage, person, lights);
+    const geometry = new THREE.ConeGeometry(2, 10, 60);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const cone = new THREE.Mesh(geometry, material);
+    cone.position.add(new THREE.Vector3(0, 0, -50));
+    this.add(stage, person, lights, cone);
 
     // Populate GUI
-    this.state.gui.add(this.state, "rotationSpeed", -5, 5);
+    this.state.gui.add(this.state, "rotationSpeed", -5, 5).name("Speed");
   }
 
   addToUpdateList(object) {
