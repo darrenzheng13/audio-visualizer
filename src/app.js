@@ -16,8 +16,9 @@ const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera
-camera.position.set(6, 3, -10);
-camera.lookAt(new Vector3(0, 0, 0));
+// camera.position.set(6, 3, -10);
+// camera.lookAt(new Vector3(0, -250, -700));
+// camera.lookAt(new Vector3(6, 3, 10));
 // Set up renderer, canvas, and minor CSS adjustments
 renderer.setPixelRatio(window.devicePixelRatio);
 const canvas = renderer.domElement;
@@ -30,10 +31,13 @@ document.body.appendChild(canvas);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 4;
-controls.maxDistance = 16;
+controls.minDistance = 1000; // zooom in  or out
+controls.maxDistance = 1200;
+controls.target = new Vector3(0, -10, -700); // center of pov
 controls.update();
 
+camera.position.set(6, 3, -10);
+camera.lookAt(new Vector3(0, -250, 700));
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
   controls.update();

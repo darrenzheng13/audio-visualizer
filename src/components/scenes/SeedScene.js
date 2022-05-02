@@ -1,6 +1,6 @@
 import * as Dat from "dat.gui";
 import * as THREE from "three";
-import { Scene, Color } from "three";
+import { Scene, Color, Camera } from "three";
 import { Flower, Land, Person, Stage } from "objects";
 import { BasicLights } from "lights";
 
@@ -29,20 +29,71 @@ class SeedScene extends Scene {
     ];
     this.background = this.backgroundPalette[6];
     // Add meshes to scene
-    // const land = new Land();
     const stage = new Stage();
-    const person = new Person();
-    // person.position.add(new THREE.Vector3(-500, -500, -500));
     const lights = new BasicLights();
+
     // position stage
     stage.position.add(new THREE.Vector3(0, -250, -700));
     stage.scale.set(0.4, 0.4, 0.4);
-    // this.add(land, stage, flower, lights);
-    const geometry = new THREE.ConeGeometry(2, 10, 60);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const cone = new THREE.Mesh(geometry, material);
-    cone.position.add(new THREE.Vector3(0, 0, -50));
-    this.add(stage, person, lights, cone);
+    stage.depthTest = false;
+
+    // add cones
+    let cones = [];
+    const conePositions = [
+      new THREE.Vector3(-295, -70, -710),
+      new THREE.Vector3(-178, -70, -710),
+      new THREE.Vector3(-61, -70, -710),
+      new THREE.Vector3(56, -70, -710),
+      new THREE.Vector3(173, -70, -710),
+      new THREE.Vector3(292, -70, -710),
+    ];
+    conePositions.forEach((pos) => {
+      const geometry = new THREE.ConeGeometry(20, 380, 32);
+      const material = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff,
+        opacity: 0.5,
+        transparent: true,
+      });
+      let cone = new THREE.Mesh(geometry, material);
+      cone.position.add(pos);
+      cones.push(cone);
+    });
+
+    cones.forEach((cone) => {
+      // cone.material.color = new Color(0x000000);
+      this.add(cone);
+    });
+    this.add(stage, lights);
+
+    // add audience
+    let people = [];
+    let peoplePositions = [
+      new THREE.Vector3(-300, -200, -600),
+      new THREE.Vector3(-200, -200, -600),
+      new THREE.Vector3(-100, -200, -600),
+      new THREE.Vector3(0, -200, -600),
+      new THREE.Vector3(100, -200, -600),
+      new THREE.Vector3(200, -200, -600),
+      new THREE.Vector3(300, -200, -600),
+      new THREE.Vector3(-350, -200, -520),
+      new THREE.Vector3(-250, -200, -520),
+      new THREE.Vector3(-150, -200, -520),
+      new THREE.Vector3(-50, -200, -520),
+      new THREE.Vector3(50, -200, -520),
+      new THREE.Vector3(150, -200, -520),
+      new THREE.Vector3(250, -200, -520),
+      new THREE.Vector3(350, -200, -520),
+    ];
+    peoplePositions.forEach((pos) => {
+      const person = new Person();
+      person.scale.set(18, 18, 18);
+      person.rotation.y = 3.14;
+      person.position.add(pos);
+      people.push(person);
+    });
+    people.forEach((person) => {
+      this.add(person);
+    });
 
     // Populate GUI
     this.state.gui.add(this.state, "rotationSpeed", -5, 5).name("Speed");
