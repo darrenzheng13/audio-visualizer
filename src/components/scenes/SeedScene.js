@@ -1,7 +1,9 @@
+import { vertexShader, fragmentShader } from './Shaders.js';
 import * as Dat from "dat.gui";
 import * as THREE from "three";
 import {
   Audio,
+  AudioAnalyser,
   AudioListener,
   AudioLoader,
   Scene,
@@ -10,6 +12,7 @@ import {
   MeshNormalMaterial,
   Mesh,
   PlaneGeometry,
+  ShaderMaterial,
 } from "three";
 import { Flower, Land, Person, Stage } from "objects";
 import { BasicLights } from "lights";
@@ -117,7 +120,7 @@ class SeedScene extends Scene {
       audioLoader.load("./slander.mp3", function (buffer) {
         sound.setBuffer(buffer);
         sound.setLoop(false);
-        sound.setVolume(1);
+        sound.setVolume(0.01);
         audioCtx.resume();
         if (neverPlayed || sound.ended) {
           neverPlayed = false;
@@ -130,34 +133,65 @@ class SeedScene extends Scene {
     };
 
     window.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
+      if (event.key === " ") {
         playSong();
       }
     });
 
+    // audio context is way for us to get frequency data of audio file
+    // 1024 is fft (fast fourier transform) size, greater number = more samples
+    const analyser = new AudioAnalyser(sound, 2048);
+    let dataArray = analyser.getFrequencyData();
+
+    const uniforms = {
+      u_time: {
+        type: "f",
+        value: 1.0,
+      },
+      u_amplitude: {
+        type: "f",
+        value: 1000.0,
+      },
+      u_data_arr: {
+        type: "float[64]",
+        value: dataArray,
+      },
+    };
+
     // audio visualization mesh
     const planeGeometry = new PlaneGeometry(64, 64, 64, 64);
-    const planeMaterial = new MeshNormalMaterial({ wireframe: true });
+    // ShaderMaterial used so we can control position of vertices
+    const planeMaterial = new ShaderMaterial({
+      // uniforms are dataArray and time
+      uniforms: uniforms,
+      // vertexShader and fragmentShader are what make the visualization look cool!
+      vertexShader: vertexShader(),
+      fragmentShader: fragmentShader(),
+      wireframe: true,
+    });
     const planeMesh = new Mesh(planeGeometry, planeMaterial);
-    planeMesh.rotation.x = -Math.PI / 2 + Math.PI / 4;
-    planeMesh.scale.x = 2;
+    planeMesh.position.add(new THREE.Vector3(0, 0, -1000))
+    // planeMesh.rotation.x = -Math.PI / 2 + Math.PI / 4;
+    planeMesh.scale.x = 10;
+    planeMesh.scale.y = 5;
     this.add(planeMesh);
 
-    // audio context is way for us to get frequency data of audio file
-    const analyser = audioCtx.createAnalyser();
-    analyser.connect(audioCtx.destination);
-    analyser.fftSize = 1024;
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-    const render = () => {
+    const render = (time) => {
       // update audio data
-      analyser.getByteFrequencyData(dataArray);
+      dataArray = analyser.getFrequencyData();
+
+      // update uniforms
+      uniforms.u_time.value = time;
+      uniforms.u_data_arr.value = dataArray;
+
       // call render function on every animation frame
       requestAnimationFrame(render);
     };
 
     // Populate GUI
     this.state.gui.add(this.state, "rotationSpeed", -5, 5).name("Speed");
+
+    render();
   }
 
   addToUpdateList(object) {

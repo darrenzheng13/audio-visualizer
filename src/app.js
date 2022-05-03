@@ -31,12 +31,12 @@ document.body.appendChild(canvas);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 1000; // zooom in  or out
-controls.maxDistance = 1200;
+controls.minDistance = 400; // zooom in  or out
+controls.maxDistance = 600;
 controls.target = new Vector3(0, -10, -700); // center of pov
 controls.update();
 
-camera.position.set(6, 100, -10);
+camera.position.set(6, -100, -10);
 camera.lookAt(new Vector3(0, -250, 700));
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
