@@ -105,6 +105,7 @@ class SeedScene extends Scene {
       this.add(person);
     });
 
+
     // set up listener, sound, audio loader
     const listener = new AudioListener();
     this.add(listener);
