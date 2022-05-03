@@ -15,8 +15,6 @@ const vertexShader = () => {
             y = abs(position.y);
             float floor_x = floor(x + 0.5);
             float floor_y = floor(y + 0.5);
-            float x_multiplier = (64.0 - x) / 16.0;
-            float y_multiplier = (64.0 - y) / 16.0;
             z = sin(u_data_arr[int(floor_x)] / 64.0 + u_data_arr[int(floor_y)] / 64.0) * u_amplitude;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x, position.y, z, 1.0);
         }
