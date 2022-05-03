@@ -1,7 +1,7 @@
 import * as Dat from "dat.gui";
 import * as THREE from "three";
 import { Scene, Color, Camera } from "three";
-import { Flower, Land, Person, Stage } from "objects";
+import { Person, Stage } from "objects";
 import { BasicLights } from "lights";
 
 class SeedScene extends Scene {
@@ -68,21 +68,21 @@ class SeedScene extends Scene {
     // add audience
     let people = [];
     let peoplePositions = [
-      new THREE.Vector3(-300, -200, -600),
+      new THREE.Vector3(-300, -200, -605),
       new THREE.Vector3(-200, -200, -600),
-      new THREE.Vector3(-100, -200, -600),
-      new THREE.Vector3(0, -200, -600),
-      new THREE.Vector3(100, -200, -600),
-      new THREE.Vector3(200, -200, -600),
-      new THREE.Vector3(300, -200, -600),
-      new THREE.Vector3(-350, -200, -520),
-      new THREE.Vector3(-250, -200, -520),
-      new THREE.Vector3(-150, -200, -520),
-      new THREE.Vector3(-50, -200, -520),
+      new THREE.Vector3(-100, -200, -603),
+      new THREE.Vector3(0, -200, -590),
+      new THREE.Vector3(100, -200, -597),
+      new THREE.Vector3(200, -200, -605),
+      new THREE.Vector3(300, -200, -595),
+      new THREE.Vector3(-350, -200, -530),
+      new THREE.Vector3(-250, -200, -525),
+      new THREE.Vector3(-150, -200, -521),
+      new THREE.Vector3(-50, -200, -535),
       new THREE.Vector3(50, -200, -520),
-      new THREE.Vector3(150, -200, -520),
-      new THREE.Vector3(250, -200, -520),
-      new THREE.Vector3(350, -200, -520),
+      new THREE.Vector3(150, -200, -512),
+      new THREE.Vector3(250, -200, -527),
+      new THREE.Vector3(350, -200, -529),
     ];
     peoplePositions.forEach((pos) => {
       const person = new Person();

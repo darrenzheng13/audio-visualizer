@@ -36,7 +36,7 @@ controls.maxDistance = 1200;
 controls.target = new Vector3(0, -10, -700); // center of pov
 controls.update();
 
-camera.position.set(6, 3, -10);
+camera.position.set(6, 100, -10);
 camera.lookAt(new Vector3(0, -250, 700));
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
