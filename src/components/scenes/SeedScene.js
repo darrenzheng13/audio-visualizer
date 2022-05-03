@@ -1,4 +1,4 @@
-import { vertexShader, fragmentShader } from './Shaders.js';
+import { vertexShader, fragmentShader } from "./Shaders.js";
 import * as Dat from "dat.gui";
 import * as THREE from "three";
 import {
@@ -26,6 +26,7 @@ class SeedScene extends Scene {
     this.state = {
       gui: new Dat.GUI(), // Create GUI for scene
       rotationSpeed: 5, // speed in which the background color changes
+      amplitude: 500, // amplitude of the visualization mesh
       updateList: [],
     };
 
@@ -108,7 +109,6 @@ class SeedScene extends Scene {
       this.add(person);
     });
 
-
     // set up listener, sound, audio loader
     const listener = new AudioListener();
     this.add(listener);
@@ -143,7 +143,7 @@ class SeedScene extends Scene {
     // 1024 is fft (fast fourier transform) size, greater number = more samples
     const analyser = new AudioAnalyser(sound, 2048);
     let dataArray = analyser.getFrequencyData();
-
+    const { amplitude } = this.state;
     const uniforms = {
       u_time: {
         type: "f",
@@ -151,7 +151,7 @@ class SeedScene extends Scene {
       },
       u_amplitude: {
         type: "f",
-        value: 1000.0,
+        value: amplitude,
       },
       u_data_arr: {
         type: "float[64]",
@@ -171,10 +171,10 @@ class SeedScene extends Scene {
       wireframe: true,
     });
     const planeMesh = new Mesh(planeGeometry, planeMaterial);
-    planeMesh.position.add(new THREE.Vector3(0, 0, -1000))
+    planeMesh.position.add(new THREE.Vector3(0, -50, -1060));
     // planeMesh.rotation.x = -Math.PI / 2 + Math.PI / 4;
     planeMesh.scale.x = 10;
-    planeMesh.scale.y = 5;
+    planeMesh.scale.y = 6.5;
     this.add(planeMesh);
 
     const render = (time) => {
@@ -184,6 +184,8 @@ class SeedScene extends Scene {
       // update uniforms
       uniforms.u_time.value = time;
       uniforms.u_data_arr.value = dataArray;
+      const { amplitude } = this.state;
+      uniforms.u_amplitude.value = amplitude;
 
       // call render function on every animation frame
       requestAnimationFrame(render);
@@ -191,6 +193,7 @@ class SeedScene extends Scene {
 
     // Populate GUI
     this.state.gui.add(this.state, "rotationSpeed", -5, 5).name("Speed");
+    this.state.gui.add(this.state, "amplitude", 50, 1000).name("amplitude");
 
     render();
   }
