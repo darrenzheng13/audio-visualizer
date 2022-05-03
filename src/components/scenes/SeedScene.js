@@ -159,7 +159,7 @@ class SeedScene extends Scene {
       },
     };
 
-    // audio visualization  
+    // audio visualization
     const planeGeometry = new PlaneGeometry(64, 64, 64, 64);
     // ShaderMaterial used so we can control position of vertices
     const planeMaterial = new ShaderMaterial({
@@ -180,7 +180,12 @@ class SeedScene extends Scene {
     const render = (time) => {
       // update audio data
       dataArray = analyser.getFrequencyData();
-
+      // const { rotationSpeed, updateList } = this.state;
+      // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+      // this.background = this.backgroundPalette[
+      //   rotationSpeed * (Math.floor(time / 10000) % 7)
+      // ];
+      // console.log(time);
       // update uniforms
       uniforms.u_time.value = time;
       uniforms.u_data_arr.value = dataArray;
@@ -192,8 +197,8 @@ class SeedScene extends Scene {
     };
 
     // Populate GUI
-    this.state.gui.add(this.state, "rotationSpeed", -5, 5).name("Speed");
-    this.state.gui.add(this.state, "amplitude", 50, 1000).name("amplitude");
+    this.state.gui.add(this.state, "rotationSpeed", 0, 10).name("Speed");
+    this.state.gui.add(this.state, "amplitude", 50, 1000).name("Amplitude");
 
     render();
   }
@@ -205,7 +210,9 @@ class SeedScene extends Scene {
   update(timeStamp) {
     const { rotationSpeed, updateList } = this.state;
     // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
-    this.background = this.backgroundPalette[(rotationSpeed * timeStamp) % 7];
+    this.background = this.backgroundPalette[
+      (Math.floor(rotationSpeed) * timeStamp) % 7
+    ];
     // Call update for each object in the updateList
     for (const obj of updateList) {
       obj.update(timeStamp);
