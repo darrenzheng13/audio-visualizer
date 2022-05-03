@@ -1,7 +1,12 @@
 import * as Dat from "dat.gui";
 import * as THREE from "three";
+<<<<<<< Updated upstream
 import { Scene, Color, Camera } from "three";
 import { Person, Stage } from "objects";
+=======
+import { Audio, AudioListener, AudioLoader, Scene, Color, Camera, MeshNormalMaterial, Mesh, PlaneGeometry} from "three";
+import { Flower, Land, Person, Stage } from "objects";
+>>>>>>> Stashed changes
 import { BasicLights } from "lights";
 
 class SeedScene extends Scene {
@@ -12,7 +17,7 @@ class SeedScene extends Scene {
     // Init state
     this.state = {
       gui: new Dat.GUI(), // Create GUI for scene
-      rotationSpeed: 10, // speed in which the background color changes
+      rotationSpeed: 5, // speed in which the background color changes
       updateList: [],
     };
 
@@ -94,6 +99,56 @@ class SeedScene extends Scene {
     people.forEach((person) => {
       this.add(person);
     });
+
+    // set up listener, sound, audio loader
+    const listener = new AudioListener();
+    this.add(listener);
+    const sound = new Audio(listener);
+    const audioLoader = new AudioLoader();
+    const audioCtx = new AudioContext();
+    let neverPlayed = true;
+
+    const playSong = () => {
+      audioLoader.load('./slander.mp3', function(buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(false);
+        sound.setVolume(1);
+        audioCtx.resume();
+        if (neverPlayed || sound.ended) {
+          neverPlayed = false;
+          sound.play();
+          setTimeout(function(){
+            sound.stop();
+          }, 68000);
+        }
+      })
+    }
+
+    window.addEventListener('keydown', function(event){
+      if(event.key === "Escape") {
+        playSong();
+      }
+    });
+
+    // audio visualization mesh
+    const planeGeometry = new PlaneGeometry(64, 64, 64, 64);
+    const planeMaterial = new MeshNormalMaterial({wireframe: true});
+    const planeMesh = new Mesh(planeGeometry, planeMaterial);
+    planeMesh.rotation.x = -Math.PI / 2 + Math.PI / 4;
+    planeMesh.scale.x = 2;
+
+    // audio context is way for us to get frequency data of audio file
+    const analyser = audioCtx.createAnalyser();
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 1024;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    const render = () => {
+      // update audio data
+      analyser.getByteFrequencyData(dataArray);
+      // call render function on every animation frame
+      requestAnimationFrame(render);
+    }
 
     // Populate GUI
     this.state.gui.add(this.state, "rotationSpeed", -5, 5).name("Speed");
