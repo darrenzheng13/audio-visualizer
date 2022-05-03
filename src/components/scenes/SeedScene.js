@@ -41,7 +41,7 @@ class SeedScene extends Scene {
       new Color(0xffffb5),
       new Color(0xd4f0f0),
     ];
-    this.background = this.backgroundPalette[6];
+    this.background = this.backgroundPalette[7];
     // Add meshes to scene
     const stage = new Stage();
     const lights = new BasicLights();
