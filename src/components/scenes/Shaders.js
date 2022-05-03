@@ -28,7 +28,7 @@ const fragmentShader = () => {
       varying float y;
       varying float z;
       void main() {
-        gl_FragColor = vec4((32.0 - abs(x)) / 16.0, (32.0 - abs(y)) / 16.0, (abs(x + y) / 2.0) / 16.0, 1.0);
+        gl_FragColor = vec4((32.0 - abs(x)) / 16.0, (16.0 - abs(y)) / 16.0, (abs(x + y) / 2.0) / 16.0, 1.0);
       }
     `;
 };
