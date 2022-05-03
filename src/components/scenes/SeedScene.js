@@ -115,7 +115,7 @@ class SeedScene extends Scene {
     const sound = new Audio(listener);
     const audioLoader = new AudioLoader();
     const audioCtx = new AudioContext();
-    let neverPlayed = true;
+    let isPlaying = false;
 
     const playSong = () => {
       audioLoader.load("./slander.mp3", function (buffer) {
@@ -123,8 +123,8 @@ class SeedScene extends Scene {
         sound.setLoop(false);
         sound.setVolume(0.01);
         audioCtx.resume();
-        if (neverPlayed || sound.ended) {
-          neverPlayed = false;
+        if (!isPlaying) {
+          isPlaying = true;
           sound.play();
           setTimeout(function () {
             sound.stop();
@@ -159,7 +159,7 @@ class SeedScene extends Scene {
       },
     };
 
-    // audio visualization mesh
+    // audio visualization  
     const planeGeometry = new PlaneGeometry(64, 64, 64, 64);
     // ShaderMaterial used so we can control position of vertices
     const planeMaterial = new ShaderMaterial({

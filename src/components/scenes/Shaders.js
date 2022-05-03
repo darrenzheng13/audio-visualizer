@@ -6,12 +6,11 @@ const vertexShader = () => {
         varying float x;
         varying float y;
         varying float z;
-        varying vec3 vUv;
-        uniform float u_time;
+        varying vec3 pos;
         uniform float u_amplitude;
         uniform float u_data_arr[64];
         void main() {
-            vUv = position;
+            pos = position;
             x = abs(position.x);
             y = abs(position.y);
             float floor_x = floor(x + 0.5);
@@ -30,8 +29,6 @@ const fragmentShader = () => {
       varying float x;
       varying float y;
       varying float z;
-      varying vec3 vUv;
-      uniform float u_time;
       void main() {
         gl_FragColor = vec4((32.0 - abs(x)) / 16.0, (32.0 - abs(y)) / 16.0, (abs(x + y) / 2.0) / 16.0, 1.0);
       }
