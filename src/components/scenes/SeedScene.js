@@ -33,13 +33,13 @@ class SeedScene extends Scene {
     // Set background to a nice color
 
     this.backgroundPalette = [
-      new Color(0x4d4dff),
-      new Color(0xc724b1),
-      new Color(0xe0e722),
-      new Color(0xffad00),
-      new Color(0xd22730),
-      new Color(0xdb3eb1),
-      new Color(0x44d62c),
+      new Color(0xfed7c3),
+      new Color(0xcce2cb),
+      new Color(0xffaea5),
+      new Color(0x97c1a9),
+      new Color(0xffc8a2),
+      new Color(0xffffb5),
+      new Color(0xd4f0f0),
     ];
     this.background = this.backgroundPalette[6];
     // Add meshes to scene
