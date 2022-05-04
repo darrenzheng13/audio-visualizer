@@ -1,6 +1,6 @@
 import { Group } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import MODEL from "./scene.gltf";
+import MODEL from "./scene.glb";
 
 class Stage extends Group {
   constructor() {
