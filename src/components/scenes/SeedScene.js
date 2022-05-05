@@ -8,15 +8,13 @@ import {
   AudioLoader,
   Scene,
   Color,
-  Camera,
-  MeshNormalMaterial,
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
 } from "three";
-import { Flower, Land, Person, Stage } from "objects";
+import { Person, Stage } from "objects";
 import { BasicLights } from "lights";
-import AUDIO from "../../../slander.mp3";
+// import AUDIO from "../../../slander.mp3";
 
 class SeedScene extends Scene {
   constructor() {
@@ -111,6 +109,26 @@ class SeedScene extends Scene {
       this.add(person);
     });
 
+    // button for uploading audio file
+    let content;
+    let obj = { add:function() {
+      let input = document.createElement('input');
+      input.type = 'file';
+      input.onchange = e => { 
+        let file = e.target.files[0]; 
+        // setting up reader
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = readerEvent => {
+          // content of audio file
+          content = readerEvent.target.result;
+          console.log(content);
+        }
+      };
+      input.click();
+    }};
+
     // set up listener, sound, audio loader
     const listener = new AudioListener();
     this.add(listener);
@@ -121,7 +139,7 @@ class SeedScene extends Scene {
 
     const playSong = () => {
       this.bop = true;
-      audioLoader.load(AUDIO, function (buffer) {
+      audioLoader.load(content, function (buffer) {
         sound.setBuffer(buffer);
         sound.setLoop(false);
         sound.setVolume(0.01);
@@ -199,7 +217,12 @@ class SeedScene extends Scene {
       requestAnimationFrame(render);
     };
 
+    let instr = { instr:function() {
+      
+    }};
+
     // Populate GUI
+    this.state.gui.add(obj, "add").name("Upload MP3 File");
     this.state.gui.add(this.state, "rotationSpeed", 0, 10).name("Speed");
     this.state.gui.add(this.state, "amplitude", 0, 800).name("Amplitude");
     this.state.gui.add(this.state, "rock", 0, 0.25).name("Audience Energy");
