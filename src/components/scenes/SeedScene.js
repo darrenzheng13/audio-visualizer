@@ -121,7 +121,7 @@ class SeedScene extends Scene {
 
     const playSong = () => {
       this.bop = true;
-      audioLoader.load("./slander.mp3", function (buffer) {
+      audioLoader.load(AUDIO, function (buffer) {
         sound.setBuffer(buffer);
         sound.setLoop(false);
         sound.setVolume(0.01);
