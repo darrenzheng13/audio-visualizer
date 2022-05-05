@@ -23,7 +23,9 @@ const scene = new SeedScene();
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 let fireworks = [];
+import AUDIO from "../slander.mp3";
 
+let audio = require("../slander.mp3");
 // Set up camera
 // camera.position.set(6, 3, -10);
 // camera.lookAt(new Vector3(0, -250, -700));
