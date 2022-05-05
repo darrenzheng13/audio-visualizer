@@ -26,7 +26,7 @@ class SeedScene extends Scene {
     this.state = {
       gui: new Dat.GUI(), // Create GUI for scene
       rotationSpeed: 5, // speed in which the background color changes
-      amplitude: 500, // amplitude of the visualization mesh
+      amplitude: 250, // amplitude of the visualization mesh
       updateList: [],
     };
 
@@ -198,7 +198,7 @@ class SeedScene extends Scene {
 
     // Populate GUI
     this.state.gui.add(this.state, "rotationSpeed", 0, 10).name("Speed");
-    this.state.gui.add(this.state, "amplitude", 50, 1000).name("Amplitude");
+    this.state.gui.add(this.state, "amplitude", 0, 800).name("Amplitude");
 
     render();
   }
