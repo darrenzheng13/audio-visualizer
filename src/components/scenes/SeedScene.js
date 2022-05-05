@@ -16,6 +16,7 @@ import {
 } from "three";
 import { Flower, Land, Person, Stage } from "objects";
 import { BasicLights } from "lights";
+import AUDIO from "../../../slander.mp3";
 
 class SeedScene extends Scene {
   constructor() {
@@ -27,9 +28,11 @@ class SeedScene extends Scene {
       gui: new Dat.GUI(), // Create GUI for scene
       rotationSpeed: 5, // speed in which the background color changes
       amplitude: 250, // amplitude of the visualization mesh
+      rock: 0.05,
       updateList: [],
     };
-
+    this.people = [];
+    this.bop = false;
     // Set background to a nice color
 
     this.backgroundPalette = [
@@ -80,7 +83,6 @@ class SeedScene extends Scene {
     this.add(stage, lights);
 
     // add audience
-    let people = [];
     let peoplePositions = [
       new THREE.Vector3(-300, -200, -605),
       new THREE.Vector3(-200, -200, -600),
@@ -103,9 +105,9 @@ class SeedScene extends Scene {
       person.scale.set(18, 18, 18);
       person.rotation.y = 3.14;
       person.position.add(pos);
-      people.push(person);
+      this.people.push(person);
     });
-    people.forEach((person) => {
+    this.people.forEach((person) => {
       this.add(person);
     });
 
@@ -118,6 +120,7 @@ class SeedScene extends Scene {
     let isPlaying = false;
 
     const playSong = () => {
+      this.bop = true;
       audioLoader.load("./slander.mp3", function (buffer) {
         sound.setBuffer(buffer);
         sound.setLoop(false);
@@ -199,6 +202,7 @@ class SeedScene extends Scene {
     // Populate GUI
     this.state.gui.add(this.state, "rotationSpeed", 0, 10).name("Speed");
     this.state.gui.add(this.state, "amplitude", 0, 800).name("Amplitude");
+    this.state.gui.add(this.state, "rock", 0, 0.25).name("Audience Energy");
 
     render();
   }
@@ -208,11 +212,17 @@ class SeedScene extends Scene {
   }
 
   update(timeStamp) {
-    const { rotationSpeed, updateList } = this.state;
+    const { rotationSpeed, updateList, rock } = this.state;
     // this.rotation.y = (rotationSpeed * timeStamp) / 10000;
     this.background = this.backgroundPalette[
       (Math.floor(rotationSpeed) * timeStamp) % 7
     ];
+    if (this.bop) {
+      this.people.forEach((person) => {
+        person.rotation.z = rock * Math.sin(timeStamp / 300);
+      });
+    }
+
     // Call update for each object in the updateList
     for (const obj of updateList) {
       obj.update(timeStamp);
