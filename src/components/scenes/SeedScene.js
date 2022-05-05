@@ -111,6 +111,31 @@ class SeedScene extends Scene {
 
     // button for uploading audio file
     let content;
+
+    // set up listener, sound, audio loader
+    const listener = new AudioListener();
+    this.add(listener);
+    const sound = new Audio(listener);
+    const audioLoader = new AudioLoader();
+    const audioCtx = new AudioContext();
+    let isPlaying = false;
+    let playSong = () => {
+      this.bop = true;
+      audioLoader.load(content, function (buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(false);
+        sound.setVolume(0.01);
+        audioCtx.resume();
+        if (!isPlaying) {
+          sound.play();
+          isPlaying = true;
+        } else {
+          sound.pause();
+          isPlaying = false;
+        }
+      });
+    };
+
     let obj = { add:function() {
       let input = document.createElement('input');
       input.type = 'file';
@@ -123,36 +148,15 @@ class SeedScene extends Scene {
         reader.onload = readerEvent => {
           // content of audio file
           content = readerEvent.target.result;
-          console.log(content);
+          if (isPlaying) {
+            sound.stop();
+            this.bop = false;
+            isPlaying = false;
+          }
         }
       };
       input.click();
     }};
-
-    // set up listener, sound, audio loader
-    const listener = new AudioListener();
-    this.add(listener);
-    const sound = new Audio(listener);
-    const audioLoader = new AudioLoader();
-    const audioCtx = new AudioContext();
-    let isPlaying = false;
-
-    const playSong = () => {
-      this.bop = true;
-      audioLoader.load(content, function (buffer) {
-        sound.setBuffer(buffer);
-        sound.setLoop(false);
-        sound.setVolume(0.01);
-        audioCtx.resume();
-        if (!isPlaying) {
-          isPlaying = true;
-          sound.play();
-          setTimeout(function () {
-            sound.stop();
-          }, 68000);
-        }
-      });
-    };
 
     window.addEventListener("keydown", function (event) {
       if (event.key === " ") {
@@ -192,7 +196,7 @@ class SeedScene extends Scene {
       wireframe: true,
     });
     const planeMesh = new Mesh(planeGeometry, planeMaterial);
-    planeMesh.position.add(new THREE.Vector3(0, -50, -1060));
+    planeMesh.position.add(new THREE.Vector3(0, -50, -990));
     // planeMesh.rotation.x = -Math.PI / 2 + Math.PI / 4;
     planeMesh.scale.x = 10;
     planeMesh.scale.y = 6.5;
@@ -216,10 +220,6 @@ class SeedScene extends Scene {
       // call render function on every animation frame
       requestAnimationFrame(render);
     };
-
-    let instr = { instr:function() {
-      
-    }};
 
     // Populate GUI
     this.state.gui.add(obj, "add").name("Upload MP3 File");
