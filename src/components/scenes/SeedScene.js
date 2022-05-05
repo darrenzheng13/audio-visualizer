@@ -148,7 +148,7 @@ class SeedScene extends Scene {
         reader.onload = readerEvent => {
           // content of audio file
           content = readerEvent.target.result;
-          if (isPlaying) {
+          if (sound) {
             sound.stop();
             this.bop = false;
             isPlaying = false;
