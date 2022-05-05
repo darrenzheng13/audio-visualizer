@@ -33,6 +33,10 @@ module.exports = {
         exclude: path.resolve(__dirname, "./node_modules/"),
       },
       {
+        test: /\.mp3$/,
+        loader: "file-loader",
+      },
+      {
         type: "javascript/auto",
         test: /\.(json)/,
         exclude: path.resolve(__dirname, "./node_modules/"),
