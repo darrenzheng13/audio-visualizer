@@ -158,6 +158,10 @@ class SeedScene extends Scene {
       input.click();
     }};
 
+    let nothing = { not:function() {
+      console.log("Press the Space Bar after uploading an MP3 file to play/pause")
+;    }}
+
     window.addEventListener("keydown", function (event) {
       if (event.key === " ") {
         playSong();
@@ -223,6 +227,7 @@ class SeedScene extends Scene {
 
     // Populate GUI
     this.state.gui.add(obj, "add").name("Upload MP3 File");
+    this.state.gui.add(nothing, "not").name("Space-Play/Pause");
     this.state.gui.add(this.state, "rotationSpeed", 0, 10).name("Speed");
     this.state.gui.add(this.state, "amplitude", 0, 800).name("Amplitude");
     this.state.gui.add(this.state, "rock", 0, 0.25).name("Audience Energy");
